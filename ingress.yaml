@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: >-
+      arn:aws:acm:us-east-1:822352048686:certificate/731cb45c-9cdc-487b-99d2-ecc6daaa2cac
+    alb.ingress.kubernetes.io/group.name: interfile-testing
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/target-type: ip
+  labels:
+    argocd.argoproj.io/instance: portal
+  name: testapp-cruz-ingress
+spec:
+  ingressClassName: alb
+  rules:
+    - host: app.shineskp.tk
+      http:
+        paths:
+          - backend:
+              service:
+                role: app
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
